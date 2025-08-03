@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaRocket, FaUsers, FaStar, FaCheckCircle, FaArrowRight, FaCode, FaDatabase, FaMobile, FaGlobe, FaAward, FaTrophy, FaMedal, FaCertificate, FaGraduationCap, FaBriefcase, FaHandshake, FaLightbulb, FaShieldAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaRocket, FaUsers, FaStar, FaCheckCircle, FaArrowRight, FaCode, FaDatabase, FaMobile, FaGlobe, FaAward, FaTrophy, FaMedal, FaCertificate, FaGraduationCap, FaBriefcase, FaHandshake, FaLightbulb, FaShieldAlt, FaEnvelope, FaFacebookMessenger } from 'react-icons/fa';
 import AnalyticsDashboard from './AnalyticsDashboard';
 
 const Home = () => {
@@ -170,11 +171,11 @@ const Home = () => {
               We transform your ideas into powerful, scalable solutions with enterprise-grade quality.
             </p>
             <div className="hero-buttons">
-              <button className="btn-primary" onClick={() => scrollToSection('about')}>
-                Get Started <FaArrowRight />
-              </button>
-              <button className="btn-secondary" onClick={() => scrollToSection('pricing')}>
-                View Pricing
+              <Link to="/pricing" className="btn-primary">
+                View Services & Pricing <FaArrowRight />
+              </Link>
+              <button className="btn-secondary" onClick={() => scrollToSection('about')}>
+                Learn More
               </button>
             </div>
           </motion.div>
@@ -386,15 +387,28 @@ const Home = () => {
             viewport={{ once: true }}
             className="cta-content"
           >
-            <h2>Ready to Start Your Project?</h2>
-            <p>Join hundreds of satisfied clients who trusted us with their academic and business projects</p>
+            <h2>Ready to Get Started?</h2>
+            <p>Let us know how we can help you with your project</p>
             <div className="cta-buttons">
-              <button className="btn-primary" onClick={() => scrollToSection('pricing')}>
-                View Pricing <FaArrowRight />
-              </button>
-              <button className="btn-secondary">
-                Contact Us
-              </button>
+              <Link to="/identify" className="btn-primary">
+                Get Started <FaArrowRight />
+              </Link>
+              <Link to="/pricing" className="btn-secondary">
+                View Pricing
+              </Link>
+            </div>
+            <div className="contact-methods-cta">
+              <p>Or contact us directly:</p>
+              <div className="contact-methods-grid">
+                <a href="mailto:info@capstonethesis.com" className="contact-method-btn">
+                  <FaEnvelope />
+                  <span>Email Us</span>
+                </a>
+                <a href="https://m.me/yourpage" target="_blank" rel="noopener noreferrer" className="contact-method-btn">
+                  <FaFacebookMessenger />
+                  <span>Facebook Messenger</span>
+                </a>
+              </div>
             </div>
           </motion.div>
         </div>

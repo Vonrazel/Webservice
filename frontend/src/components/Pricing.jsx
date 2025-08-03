@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaCheck, FaStar, FaRocket, FaCrown, FaCode, FaDatabase, FaMobile, FaGlobe, FaLaptop, FaFileAlt, FaShieldAlt, FaComments, FaMobileAlt, FaChartLine } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaCheck, FaStar, FaRocket, FaCrown, FaCode, FaDatabase, FaMobile, FaGlobe, FaLaptop, FaFileAlt, FaShieldAlt, FaComments, FaMobileAlt, FaChartLine, FaEnvelope, FaFacebookMessenger, FaArrowRight } from 'react-icons/fa';
 
 const Pricing = () => {
   const pricingPlans = [
@@ -129,9 +130,9 @@ const Pricing = () => {
                   ))}
                 </ul>
 
-                <button className={`plan-button ${plan.popular ? 'btn-primary' : 'btn-secondary'}`}>
+                <Link to="/request" className={`plan-button ${plan.popular ? 'btn-primary' : 'btn-secondary'}`}>
                   {plan.buttonText}
-                </button>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -297,9 +298,29 @@ const Pricing = () => {
             viewport={{ once: true }}
             className="cta-content"
           >
-            <h2>Ready to Start Your Project?</h2>
-            <p>Contact us for a personalized quote tailored to your specific requirements</p>
-            <button className="btn-primary">Get Custom Quote</button>
+            <h2>Ready to Get Started?</h2>
+            <p>Let us know how we can help you with your project</p>
+            <div className="cta-buttons">
+              <Link to="/identify" className="btn-primary">
+                Get Started <FaArrowRight />
+              </Link>
+              <Link to="/about" className="btn-secondary">
+                Learn More
+              </Link>
+            </div>
+            <div className="contact-methods-cta">
+              <p>Or contact us directly:</p>
+              <div className="contact-methods-grid">
+                <a href="mailto:info@capstonethesis.com" className="contact-method-btn">
+                  <FaEnvelope />
+                  <span>Email Us</span>
+                </a>
+                <a href="https://m.me/yourpage" target="_blank" rel="noopener noreferrer" className="contact-method-btn">
+                  <FaFacebookMessenger />
+                  <span>Facebook Messenger</span>
+                </a>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

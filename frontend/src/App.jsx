@@ -9,11 +9,15 @@ import Home from './components/Home';
 import Pricing from './components/Pricing';
 import About from './components/About';
 import ReviewForm from './components/ReviewForm';
+import ProjectRequestForm from './components/ProjectRequestForm';
+import ClientIdentification from './components/ClientIdentification';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [adminKeySequence, setAdminKeySequence] = useState([]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -40,6 +44,28 @@ function App() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Hidden admin access with keyboard shortcut
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      const newSequence = [...adminKeySequence, e.key];
+      setAdminKeySequence(newSequence);
+      
+      // Check for admin sequence: Ctrl + Alt + A
+      if (e.ctrlKey && e.altKey && e.key === 'a') {
+        e.preventDefault();
+        window.location.href = '/admin';
+      }
+      
+      // Reset sequence after 2 seconds
+      setTimeout(() => {
+        setAdminKeySequence([]);
+      }, 2000);
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+    return () => document.removeEventListener('keydown', handleKeyPress);
+  }, [adminKeySequence]);
+
   return (
     <Router>
       <div className={`app ${darkMode ? 'dark' : ''}`}>
@@ -61,8 +87,8 @@ function App() {
               <Link to="/about" className="nav-link" onClick={() => setIsMenuOpen(false)}>
                 About
               </Link>
-              <Link to="/review" className="nav-link" onClick={() => setIsMenuOpen(false)}>
-                Review
+              <Link to="/identify" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                Get Started
               </Link>
             </div>
 
@@ -86,7 +112,10 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/about" element={<About />} />
+              <Route path="/identify" element={<ClientIdentification />} />
               <Route path="/review" element={<ReviewForm />} />
+              <Route path="/request" element={<ProjectRequestForm />} />
+              <Route path="/admin" element={<AdminDashboard />} />
             </Routes>
           </AnimatePresence>
         </main>
@@ -115,6 +144,19 @@ function App() {
           </div>
           <div className="footer-bottom">
             <p>&copy; 2024 CAPSTONE & THESIS Development Services. All rights reserved.</p>
+            <Link 
+              to="/admin" 
+              style={{
+                color: 'transparent',
+                fontSize: '1px',
+                textDecoration: 'none',
+                position: 'absolute',
+                bottom: '2px',
+                right: '2px'
+              }}
+            >
+              Admin Access
+            </Link>
           </div>
         </footer>
       </div>

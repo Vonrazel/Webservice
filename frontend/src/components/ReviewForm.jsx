@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaStar, FaSmile, FaMeh, FaFrown, FaThumbsUp, FaThumbsDown, FaCheckCircle } from 'react-icons/fa';
+import { FaStar, FaSmile, FaMeh, FaFrown, FaThumbsUp, FaThumbsDown, FaCheckCircle, FaCalendar, FaDollarSign, FaHandshake } from 'react-icons/fa';
 import axios from 'axios';
 import { API_ENDPOINTS } from '../config/api';
 
@@ -15,7 +15,14 @@ const ReviewForm = () => {
     communication: 0,
     timeliness: 0,
     value: 0,
-    comments: ''
+    comments: '',
+    // Enhanced fields
+    projectType: '',
+    projectDuration: '',
+    budget: '',
+    wouldRecommend: false,
+    improvementSuggestions: '',
+    contactPermission: false
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -45,10 +52,10 @@ const ReviewForm = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -70,7 +77,14 @@ const ReviewForm = () => {
         communication: 0,
         timeliness: 0,
         value: 0,
-        comments: ''
+        comments: '',
+        // Enhanced fields
+        projectType: '',
+        projectDuration: '',
+        budget: '',
+        wouldRecommend: false,
+        improvementSuggestions: '',
+        contactPermission: false
       });
     } catch (error) {
       console.error('Error submitting review:', error);
@@ -153,6 +167,9 @@ const ReviewForm = () => {
           <FaCheckCircle className="success-icon" />
           <h2>Thank You!</h2>
           <p>Your review has been submitted successfully. We appreciate your feedback!</p>
+          <p style={{ fontSize: '14px', color: '#666', marginTop: '10px' }}>
+            Your review will be reviewed by our team before being published.
+          </p>
           <button 
             className="btn-primary"
             onClick={() => setSubmitted(false)}
@@ -233,6 +250,73 @@ const ReviewForm = () => {
             </div>
           </div>
 
+          {/* Project Details - Enhanced Fields */}
+          <div className="form-section">
+            <h3>Project Details</h3>
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="projectType">
+                  <FaHandshake style={{ marginRight: '8px' }} />
+                  Project Type
+                </label>
+                <select
+                  id="projectType"
+                  name="projectType"
+                  value={formData.projectType}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select project type</option>
+                  <option value="Capstone Project">Capstone Project</option>
+                  <option value="Thesis">Thesis</option>
+                  <option value="Research Paper">Research Paper</option>
+                  <option value="Business System">Business System</option>
+                  <option value="E-commerce Website">E-commerce Website</option>
+                  <option value="Mobile App">Mobile App</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="projectDuration">
+                  <FaCalendar style={{ marginRight: '8px' }} />
+                  Project Duration
+                </label>
+                <select
+                  id="projectDuration"
+                  name="projectDuration"
+                  value={formData.projectDuration}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select duration</option>
+                  <option value="Less than 1 month">Less than 1 month</option>
+                  <option value="1-3 months">1-3 months</option>
+                  <option value="3-6 months">3-6 months</option>
+                  <option value="6-12 months">6-12 months</option>
+                  <option value="More than 1 year">More than 1 year</option>
+                </select>
+              </div>
+            </div>
+            <div className="form-group">
+              <label htmlFor="budget">
+                <FaDollarSign style={{ marginRight: '8px' }} />
+                Budget Range
+              </label>
+              <select
+                id="budget"
+                name="budget"
+                value={formData.budget}
+                onChange={handleInputChange}
+              >
+                <option value="">Select budget range</option>
+                <option value="Under $1,000">Under $1,000</option>
+                <option value="$1,000 - $5,000">$1,000 - $5,000</option>
+                <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                <option value="$10,000 - $25,000">$10,000 - $25,000</option>
+                <option value="Over $25,000">Over $25,000</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+
           {/* Overall Rating */}
           <div className="form-section">
             <h3>Overall Experience</h3>
@@ -295,6 +379,23 @@ const ReviewForm = () => {
             />
           </div>
 
+          {/* Recommendation */}
+          <div className="form-section">
+            <h3>Recommendation</h3>
+            <div className="form-group">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="wouldRecommend"
+                  checked={formData.wouldRecommend}
+                  onChange={handleInputChange}
+                />
+                <span className="checkmark"></span>
+                I would recommend this service to others
+              </label>
+            </div>
+          </div>
+
           {/* Comments */}
           <div className="form-section">
             <h3>Additional Comments</h3>
@@ -308,6 +409,37 @@ const ReviewForm = () => {
                 rows="5"
                 placeholder="Please share any additional comments, suggestions, or specific feedback about your experience..."
               />
+            </div>
+            <div className="form-group">
+              <label htmlFor="improvementSuggestions">Improvement Suggestions</label>
+              <textarea
+                id="improvementSuggestions"
+                name="improvementSuggestions"
+                value={formData.improvementSuggestions}
+                onChange={handleInputChange}
+                rows="3"
+                placeholder="What could we improve in our services?"
+              />
+            </div>
+          </div>
+
+          {/* Contact Permission */}
+          <div className="form-section">
+            <h3>Contact Permission</h3>
+            <div className="form-group">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  name="contactPermission"
+                  checked={formData.contactPermission}
+                  onChange={handleInputChange}
+                />
+                <span className="checkmark"></span>
+                I give permission to contact me regarding my review (optional)
+              </label>
+              <p style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
+                This allows us to follow up on your feedback and provide personalized responses.
+              </p>
             </div>
           </div>
 
